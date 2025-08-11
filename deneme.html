@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Görev Listem · Portföy Sürümü</title>
+
+  <!-- Stil -->
+  <link rel="stylesheet" href="deneme.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- PDF + AutoTable + Konfeti (app.js’ten ÖNCE) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Arkaplan -->
+  <div class="bg-shape bg-a"></div>
+  <div class="bg-shape bg-b"></div>
+  <div class="grain"></div>
+
+  <main class="container" role="main" aria-label="Görev Uygulaması">
+    <header class="header">
+      <h1>📝 Görev Listem</h1>
+      <p class="subtitle">Önceliklendir, planla, ilerle.</p>
+    </header>
+
+    <!-- Tema & Dışa/İçe Aktarım & Yedekleme -->
+    <div class="topbar">
+      <button id="theme-toggle" aria-label="Tema değiştir">🌗 Tema</button>
+      <div class="io">
+        <button id="export-pdf" aria-label="PDF dışa aktar">Dışa Aktar (PDF)</button>
+
+        <label class="import-label">
+          İçe Aktar
+          <input id="import-file" type="file" accept="application/json" hidden />
+        </label>
+
+        <!-- Yedekleme (10. özellik) -->
+        <button id="backup-connect" aria-label="Yedek dosyasına bağlan">Yedek Dosyası Bağla</button>
+        <button id="backup-save" aria-label="Yedeği kaydet">Yedeği Kaydet</button>
+        <span id="backup-status" class="backup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <!-- EKLEME FORMU -->
+    <form id="todo-form" aria-label="Görev ekleme formu">
+      <input
+        id="todo-input"
+        type="text"
+        placeholder="Bir Görev Ekleyin"
+        aria-label="Görev metni"
+        required
+      />
+      <select id="priority" aria-label="Öncelik">
+        <option value="low">🟢 Düşük</option>
+        <option value="medium" selected>🟡 Orta</option>
+        <option value="high">🔴 Yüksek</option>
+      </select>
+      <input id="due-time" type="time" aria-label="Saat" step="60" />
+      <input id="due" type="date" aria-label="Bitiş tarihi" onkeydown="return false"/>
+      <button type="submit" aria-label="Görev ekle">Ekle</button>
+    </form>
+
+    <!-- Etiket Önerileri (7. özellik) -->
+    <div id="tag-suggestions" class="tag-suggest" aria-label="Etiket önerileri"></div>
+
+    <!-- FİLTRELER / ARAMA / SIRALAMA -->
+    <div class="toolbar" aria-label="Filtreler ve sayaç">
+      <div class="filters" role="group" aria-label="Filtreler">
+        <button data-filter="all" class="filter-btn is-active" aria-pressed="true">Tümü</button>
+        <button data-filter="active" class="filter-btn" aria-pressed="false">Aktif</button>
+        <button data-filter="done" class="filter-btn" aria-pressed="false">Tamamlanan</button>
+      </div>
+
+      <div class="search-sort">
+        <input id="search" type="search" placeholder="Ara (metin / #etiket)" aria-label="Arama" />
+        <select id="sort" aria-label="Sırala">
+          <option value="created_desc" selected>Yeni → Eski</option>
+          <option value="created_asc">Eski → Yeni</option>
+          <option value="priority">Öncelik</option>
+          <option value="due">Tarihe göre</option>
+          <option value="alpha">Alfabetik</option>
+        </select>
+      </div>
+
+      <div class="right-side">
+        <span id="counter" aria-live="polite">0 aktif • 0 toplam</span>
+        <button id="clear-done" class="clear-btn" aria-label="Tamamlananları sil">Tamamlananları Sil</button>
+      </div>
+    </div>
+
+    <!-- İSTATİSTİKLER -->
+    <section class="stats" aria-label="İlerleme">
+      <div class="progress-wrap">
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="badges" id="tag-cloud" aria-label="Etiketler"></div>
+    </section>
+
+    <!-- LİSTE -->
+    <ul id="todo-list" aria-label="Görev listesi"></ul>
+
+    <footer class="footer">
+      <small>İpucu: Metne <b>#etiket</b> ekleyebilirsin. Görev adına <b>çift tıkla</b> düzenle.</small>
+    </footer>
+  </main>
+
+  <!-- Uygulama kodu en sonda -->
+  <script src="deneme.js"></script>
+</body>
+</html>

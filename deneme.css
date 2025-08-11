@@ -1,0 +1,526 @@
+/* ===== Tipografi ve Temel Renkler ===== */
+:root {
+  --bg: #0f1220;
+  --card: rgba(255,255,255,0.65);
+  --text: #f6f7fb;
+  --text-weak: #cfd2ee;
+  --muted: #c9cbe3;
+  --border: rgba(255,255,255,0.18);
+  --accent: #7c9bff;
+  --accent-2: #40d3a7;
+  --warn-bg: rgba(255,243,205,0.12);
+  --warn-bd: rgba(255,230,156,0.45);
+  --control-bg: rgba(255,255,255,0.35);
+  --control-bg-hover: rgba(255,255,255,0.45);
+  --pill-bg: rgba(255,255,255,0.25);
+  --shadow: 0 16px 50px rgba(0,0,0,.25);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f3f5fb;
+    --card: rgba(255,255,255,0.65);
+    --text: #0f1220;
+    --text-weak: #495060;
+    --muted: #5a6475;
+    --border: rgba(0,0,0,0.08);
+    --accent: #4a5cff;
+    --accent-2: #1fb190;
+    --warn-bg: #fff6d6;
+    --warn-bd: #ffd772;
+    --control-bg: rgba(255,255,255,0.35);
+    --control-bg-hover: rgba(255,255,255,0.45);
+    --pill-bg: rgba(255,255,255,0.4);
+    --shadow: 0 16px 40px rgba(0,0,0,.08);
+  }
+}
+
+/* Tema veri-özniteliği */
+body[data-theme="light"] { background: #f3f5fb; color: var(--text); }
+body[data-theme="dark"] { background: #0f1220; color: var(--text); }
+
+/* ===== Genel ===== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Arkaplan Süsleri ===== */
+.bg-shape { position: fixed; z-index: 0; pointer-events: none; filter: blur(100px); }
+.bg-a {
+  width: 60vmax;
+  height: 60vmax;
+  top: -10vmax;
+  left: -10vmax;
+  background: radial-gradient(closest-side, var(--accent), transparent 70%);
+  opacity: 0.22;
+}
+.bg-b {
+  width: 70vmax;
+  height: 70vmax;
+  bottom: -15vmax;
+  right: -15vmax;
+  background: radial-gradient(closest-side, var(--accent-2), transparent 70%);
+  opacity: 0.22;
+}
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .05;
+  background-image:
+    radial-gradient(transparent 0, transparent 1px, rgba(0,0,0,.5) 1px),
+    radial-gradient(transparent 0, transparent 1px, rgba(0,0,0,.45) 1px);
+  background-size: 3px 3px, 2px 2px;
+  mix-blend-mode: overlay;
+}
+
+/* ===== Kapsayıcı ===== */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 56px auto;
+  background: var(--card);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+body[data-theme="dark"] .container {
+  background: rgba(18, 20, 35, 0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ===== Başlık ===== */
+.header h1 { margin: 0 0 4px; font-weight: 700; letter-spacing: .2px; }
+.subtitle { margin: 0 0 18px; color: var(--text-weak); }
+
+/* ===== Üst bar ===== */
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
+.io { display: flex; gap: 8px; align-items: center; }
+.import-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--control-bg);
+  backdrop-filter: blur(8px);
+}
+
+/* ===== Ortak Buton/Input Stili ===== */
+button,
+#todo-input, #search, #priority, #sort, #due {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: var(--control-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text);
+  border-radius: 12px;
+  transition: background .15s ease, box-shadow .2s ease, transform .08s ease;
+}
+button:hover { background: var(--control-bg-hover); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+button:active { transform: translateY(0); }
+#todo-input::placeholder, #search::placeholder { color: var(--text-weak); }
+#theme-toggle { display: inline-flex; align-items: center; gap: 8px; }
+
+/* ===== Form Düzeni ===== */
+#todo-form{ display:grid; grid-template-columns:1fr 140px 170px 130px 120px; gap:10px }
+
+/* ===== Toolbar ===== */
+.toolbar { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; margin-top: 14px; gap: 10px; }
+.filters { display: flex; gap: 8px; }
+.filter-btn { background: var(--control-bg); }
+.filter-btn.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+}
+.search-sort { display: flex; gap: 8px; }
+.right-side { display: flex; align-items: center; gap: 10px; }
+#counter { font-weight: 600; letter-spacing: .2px; }
+.clear-btn { background: var(--warn-bg); border-color: var(--warn-bd); }
+
+/* ===== İstatistikler ===== */
+.stats { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+.progress-wrap { display: flex; align-items: center; gap: 10px; }
+.progress-bar { width: 260px; height: 10px; border-radius: 999px; background: color-mix(in oklab, var(--text) 8%, transparent); border: 1px solid var(--border); overflow: hidden; }
+#progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .25s ease; }
+#progress-text { font-weight: 600; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-badge { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--pill-bg); font-size: .92rem; }
+
+/* ===== Liste ===== */
+#todo-list { list-style: none; padding: 0; margin-top: 16px; }
+.todo-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: var(--pill-bg);
+  backdrop-filter: blur(6px);
+}
+.todo-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.todo-text { overflow-wrap: anywhere; font-size: 1rem; }
+.todo-text.done { text-decoration: line-through; opacity: .7; }
+.todo-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent); }
+
+.meta { display: flex; gap: 8px; align-items: center; color: var(--text-weak); font-size: .95rem; }
+.pill { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); background: var(--control-bg); }
+.pill.high { border-color: #e05252; color: #e05252; font-weight: 600; }
+.pill.medium { border-color: #f0c14b; color: #b38a00; font-weight: 600; }
+.pill.low { border-color: #1fb190; color: #15997c; font-weight: 600; }
+.pill.overdue { border-color: #e05252; color: #e05252; font-weight: 700; }
+
+/* Düzenleme alanı */
+.edit-input {
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--control-bg);
+  color: var(--text);
+  min-width: 220px;
+}
+
+/* ===== Footer ===== */
+.footer { margin-top: 12px; color: var(--text-weak); }
+
+/* ===== Erişilebilirlik ===== */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+/* ===== Responsive ===== */
+@media (max-width:720px){
+  #todo-form{ grid-template-columns:1fr 1fr 1fr; grid-auto-rows:auto }
+  #due{ grid-column:1/2 }
+  #due-time{ grid-column:2/3 }
+  #todo-form button{ grid-column:3/4 }
+}
+/* ==== Koyu Tema Kontrast İyileştirme — Paste to bottom ==== */
+body[data-theme="dark"]{
+  /* Daha koyu arkaplan + net metin */
+  --bg: #0d1117;
+  --card: rgba(22,27,34,0.88);
+  --text: #f8f9fb;
+  --text-weak: #c8cddd;
+  --muted: #aab2c5;
+
+  /* Kenarlar ve cam elemanlar için daha belirgin sınırlar */
+  --border: rgba(255,255,255,0.14);
+
+  /* Kontroller: daha opak, daha kontrastlı */
+  --control-bg: rgba(255,255,255,0.10);
+  --control-bg-hover: rgba(255,255,255,0.16);
+  --pill-bg: rgba(255,255,255,0.08);
+
+  /* Aydınlatma/ gölge */
+  --shadow: 0 18px 60px rgba(0,0,0,.55);
+}
+
+/* Kart daha net ve okunur */
+body[data-theme="dark"] .container{
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow);
+}
+
+/* Arkaplan süsleri daha sakin */
+body[data-theme="dark"] .bg-a,
+body[data-theme="dark"] .bg-b{ opacity: .18; filter: blur(110px); }
+body[data-theme="dark"] .grain{ opacity: .04; }
+
+/* Tüm kontrol yüzeyleri (input/select/button) daha opak ve kontrastlı */
+body[data-theme="dark"] button,
+body[data-theme="dark"] #todo-input,
+body[data-theme="dark"] #search,
+body[data-theme="dark"] #priority,
+body[data-theme="dark"] #sort,
+body[data-theme="dark"] #due{
+  background: var(--control-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+body[data-theme="dark"] button:hover,
+body[data-theme="dark"] #todo-input:hover,
+body[data-theme="dark"] #search:hover,
+body[data-theme="dark"] #priority:hover,
+body[data-theme="dark"] #sort:hover,
+body[data-theme="dark"] #due:hover{
+  background: var(--control-bg-hover);
+}
+body[data-theme="dark"] #todo-input::placeholder,
+body[data-theme="dark"] #search::placeholder{
+  color: var(--text-weak);
+}
+
+/* Filtre butonu aktifken belirgin mavi halka */
+body[data-theme="dark"] .filter-btn.is-active{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,155,255,0.40);
+}
+
+/* İstatistik çubuğu daha görünür */
+body[data-theme="dark"] .progress-bar{
+  background: color-mix(in oklab, #ffffff 14%, transparent);
+  border-color: var(--border);
+}
+body[data-theme="dark"] #progress-text{ color: var(--text); }
+
+/* Liste satırları */
+body[data-theme="dark"] .todo-item{
+  background: var(--pill-bg);
+  border-color: var(--border);
+}
+body[data-theme="dark"] .todo-text.done{ opacity: .75; }
+
+/* Meta rozetleri */
+body[data-theme="dark"] .pill{ background: var(--control-bg); border-color: var(--border); }
+
+/* Uyarı düğmesi (Tamamlananları Sil) koyu temada daha okunur */
+body[data-theme="dark"] .clear-btn{
+  background: rgba(255, 232, 170, 0.16);
+  border-color: #ffe08a;
+  color: var(--text);
+}
+
+/* Arama/Seçim grupları, sayaç netliği */
+body[data-theme="dark"] #counter{ color: var(--text); }
+/* ==== Koyu temada filtre/sıralama açılır menülerini koyulaştır ==== */
+
+/* Tarayıcıya 'koyu denetimler kullan' ipucu ver */
+body[data-theme="dark"] .container,
+body[data-theme="dark"] select,
+body[data-theme="dark"] input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Select gövdesi (kapalıyken) */
+body[data-theme="dark"] select#sort,
+body[data-theme="dark"] select#priority {
+  background-color: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.14);
+  color: #f4f6fb;
+}
+
+/* Açılır listedeki seçenekler (çoğu tarayıcıda çalışır) */
+body[data-theme="dark"] select#sort option,
+body[data-theme="dark"] select#priority option,
+body[data-theme="dark"] select#sort optgroup,
+body[data-theme="dark"] select#priority optgroup {
+  background-color: #161b22;   /* GitHub dark gibi koyu gri-mavi */
+  color: #e6eaf2;
+}
+
+/* Odak/hover durumları */
+body[data-theme="dark"] select#sort:focus,
+body[data-theme="dark"] select#priority:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+body[data-theme="dark"] select#sort option:hover,
+body[data-theme="dark"] select#priority option:hover {
+  background-color: #0f141b;
+}
+
+/* Tarih seçici ikonunun koyu temada görünmesi (WebKit) */
+body[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.2);
+  opacity: 0.9;
+}
+
+/* Arama kutusu placeholder'ı biraz daha net olsun */
+body[data-theme="dark"] #search::placeholder {
+  color: #b9c0d3;
+}
+/* ==== PATCH v2 — Koyu temada kontrast + dropdown düzeltmesi (append only) ==== */
+
+/* 1) Koyu temada cam yüzeyi biraz opaklaştır, metni aç */
+body[data-theme="dark"]{
+  --card: rgba(22,27,34,0.92);     /* önceki 0.65–0.88 yerine okunurluk için 0.92 */
+  --text: #f5f7ff;
+  --text-weak: #c7cee2;
+  --border: rgba(255,255,255,0.18);
+
+  /* Kontrolleri koyulaştır (beyaz parlamayı kes) */
+  --control-bg: rgba(255,255,255,0.12);
+  --control-bg-hover: rgba(255,255,255,0.18);
+  --pill-bg: rgba(255,255,255,0.10);
+}
+
+body[data-theme="dark"] .container{
+  background: var(--card);
+  border-color: var(--border);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* 2) Tüm buton/input/select alanları koyu fonda daha net olsun */
+body[data-theme="dark"] button,
+body[data-theme="dark"] #todo-input,
+body[data-theme="dark"] #search,
+body[data-theme="dark"] #priority,
+body[data-theme="dark"] #sort,
+body[data-theme="dark"] #due {
+  background: var(--control-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+body[data-theme="dark"] button:hover,
+body[data-theme="dark"] #todo-input:hover,
+body[data-theme="dark"] #search:hover,
+body[data-theme="dark"] #priority:hover,
+body[data-theme="dark"] #sort:hover,
+body[data-theme="dark"] #due:hover {
+  background: var(--control-bg-hover);
+}
+body[data-theme="dark"] #todo-input::placeholder,
+body[data-theme="dark"] #search::placeholder { color: var(--text-weak); }
+
+/* 3) Filtre butonu aktifken belirgin halo */
+body[data-theme="dark"] .filter-btn.is-active{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,155,255,0.40);
+}
+
+/* 4) Açılır menüler ve tarih seçici beyaz kalmasın */
+body[data-theme="dark"] .container,
+body[data-theme="dark"] select,
+body[data-theme="dark"] input[type="date"] { color-scheme: dark; }
+
+body[data-theme="dark"] select#sort,
+body[data-theme="dark"] select#priority {
+  background-color: rgba(255,255,255,0.12);
+  border-color: var(--border);
+  color: var(--text);
+}
+body[data-theme="dark"] select#sort option,
+body[data-theme="dark"] select#priority option,
+body[data-theme="dark"] select#sort optgroup,
+body[data-theme="dark"] select#priority optgroup {
+  background-color: #161b22;
+  color: #e6eaf2;
+}
+body[data-theme="dark"] select#sort:focus,
+body[data-theme="dark"] select#priority:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+body[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.15);
+  opacity: 0.9;
+}
+
+/* 5) Liste satırı ve istatistik çubuğu kontrastı */
+body[data-theme="dark"] .todo-item{
+  background: var(--pill-bg);
+  border-color: var(--border);
+}
+body[data-theme="dark"] .progress-bar{
+  background: color-mix(in oklab, #ffffff 16%, transparent);
+  border-color: var(--border);
+}
+/* ==== Compact UI Patch (daha küçük yazı + daha az boşluk) ==== */
+
+/* Genel metin boyutu ve konteyner */
+body { font-size: 15px; }               /* varsayılan ~16px’ten bir tık küçük */
+.container { max-width: 820px; margin: 40px auto; }
+
+/* Başlıklar */
+.header h1 { font-size: 1.6rem; margin: 0 0 2px; }
+.subtitle { font-size: 0.95rem; margin-bottom: 12px; }
+
+/* Form yerleşimi ve kontroller */
+#todo-form { grid-template-columns: 1fr 130px 150px 120px 110px; gap: 8px; }
+button,
+#todo-input, #search, #priority, #sort, #due, #due-time {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+#todo-input::placeholder, #search::placeholder { font-size: 0.95rem; }
+
+/* Toolbar */
+.toolbar { gap: 8px; margin-top: 10px; }
+.filters { gap: 6px; }
+.filter-btn { padding: 8px 10px; }
+.right-side { gap: 8px; }
+#counter { font-size: 0.98rem; }
+
+/* İstatistik çubuğu */
+.progress-bar { height: 8px; width: 240px; }
+#progress-text { font-size: 0.95rem; }
+.tag-badge { padding: 4px 8px; font-size: 0.85rem; }
+
+/* Liste öğeleri */
+#todo-list { margin-top: 12px; }
+.todo-item { padding: 10px 12px; border-radius: 10px; margin-bottom: 8px; }
+.todo-left { gap: 8px; }
+.todo-text { font-size: 0.98rem; }
+.todo-item input[type="checkbox"] { width: 16px; height: 16px; }
+
+/* Meta rozetleri */
+.meta { gap: 6px; font-size: 0.9rem; }
+.pill { padding: 2px 8px; border-radius: 999px; }
+.pill.high, .pill.medium, .pill.low { font-weight: 600; }
+
+/* Sil düğmesi */
+.delete-btn { padding: 8px 10px; }
+
+/* Footer */
+.footer { font-size: 0.95rem; }
+
+input, select, button {
+    font-size: 0.9rem;
+}
+input[type="date"] {
+    min-width: 130px;
+    font-size: 0.9rem;
+}
+
+/* ==== Renkli Etiket Sistemi ==== */
+.tag-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:4px 8px; border-radius:999px;
+  font-size:.85rem; font-weight:600;
+  border:1px solid var(--border);
+  background: var(--pill-bg);
+}
+
+/* Görev kartında etiket rengi şerit */
+.todo-item{ position:relative; }
+.todo-item::before{
+  content:""; position:absolute; left:-1px; top:8px; bottom:8px; width:4px;
+  border-radius:4px; background: var(--tag, transparent); opacity:.9;
+}
+
+/* Etiket öneri çubukları */
+.tag-suggest{
+  display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;
+}
+.tag-suggest .tag-chip{
+  cursor:pointer;
+}
+
+/* Yedek durum etiketi */
+.backup-status{
+  font-size:.9rem; opacity:.9; margin-left:6px;
+}
