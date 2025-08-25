@@ -225,27 +225,30 @@ function renderItem({ id, text, done, priority, due, dueTime, tags }){
   span.textContent = text;
   span.title = tags.join(' ');
 
-  span.addEventListener('dblclick', () => {
-    const editor = document.createElement('input');
-    editor.type = 'text';
-    editor.className = 'edit-input';
-    editor.value = text;
-    span.replaceWith(editor);
-    editor.focus();
-    const finish = (ok) => {
-      const val = editor.value.trim();
-      if (ok && val){
-        todos = todos.map(t => t.id === id ? { ...t, text: val, tags: parseTags(val) } : t);
-        save();
-      }
-      render();
-    };
-    editor.addEventListener('keydown', (e)=>{
-      if (e.key === 'Enter') finish(true);
-      if (e.key === 'Escape') finish(false);
+    span.addEventListener('dblclick', () => {
+      const editor = document.createElement('input');
+      editor.type = 'text';
+      editor.className = 'edit-input';
+      editor.value = text;
+      span.replaceWith(editor);
+      editor.focus();
+      let finished = false;
+      const finish = (ok) => {
+        if (finished) return; // ESC + blur çift tetiklenmesini engelle
+        finished = true;
+        const val = editor.value.trim();
+        if (ok && val){
+          todos = todos.map(t => t.id === id ? { ...t, text: val, tags: parseTags(val) } : t);
+          save();
+        }
+        render();
+      };
+      editor.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter') finish(true);
+        if (e.key === 'Escape') finish(false);
+      });
+      editor.addEventListener('blur', ()=>finish(true));
     });
-    editor.addEventListener('blur', ()=>finish(true));
-  });
 
   left.append(checkbox, span);
 
